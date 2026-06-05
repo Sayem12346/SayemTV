@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STREAMVAULT — LIVE TV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Satoshi:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- BLOBS -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">STREAM<span>VAULT</span></div>
+  <div class="nav-links">
+    <button class="nav-link active" data-cat="All">ALL</button>
+    <button class="nav-link" data-cat="__favorites__">SAVED</button>
+    <button class="nav-link" id="navSearch">SEARCH</button>
+  </div>
+  <div class="nav-right">
+    <div class="search-wrap" id="searchWrap">
+      <input type="text" id="searchInput" class="search-input" placeholder="Type to search...">
+    </div>
+    <button class="icon-btn" id="themeToggle">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <h1 class="hero-title">
+      <span class="line-1">LIVE</span>
+      <span class="line-2">TV</span>
+    </h1>
+    <p class="hero-sub">Stream <span id="heroCount">0</span> channels worldwide.<br>No sign-up. No limits.</p>
+  </div>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span class="meta-num" id="metaChannels">—</span>
+      <span class="meta-label">CHANNELS</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-num" id="metaCountries">—</span>
+      <span class="meta-label">COUNTRIES</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-num">HLS</span>
+      <span class="meta-label">PROTOCOL</span>
+    </div>
+  </div>
+</section>
+
+<!-- PLAYER SECTION -->
+<section class="player-section" id="playerSection">
+  <div class="section-label">
+    <span class="label-line"></span>
+    NOW PLAYING
+    <span class="label-line"></span>
+  </div>
+
+  <div class="player-placeholder-space" id="playerSpace">
+    <span>▶</span>&nbsp; Player is floating below
+  </div>
+
+  <div class="player-wrapper" id="playerWrapper">
+    <button class="sticky-close" id="stickyClose">✕</button>
+    <div class="player-container" id="playerContainer">
+
+      <div class="player-placeholder" id="playerPlaceholder">
+        <div class="placeholder-inner">
+          <div class="ph-icon">▶</div>
+          <p class="ph-title">SELECT A CHANNEL</p>
+          <p class="ph-sub">Choose from <span id="hintCount">0</span> live streams below</p>
+        </div>
+      </div>
+
+      <video id="videoPlayer" controls playsinline></video>
+
+      <div class="player-overlay" id="playerOverlay">
+        <div class="overlay-top">
+          <div class="live-badge"><span class="live-dot"></span>LIVE</div>
+          <div class="overlay-actions">
+            <button class="ov-btn" id="favBtn">☆</button>
+            <button class="ov-btn" id="pipBtn">⧉</button>
+            <button class="ov-btn" id="fsBtn">⛶</button>
+          </div>
+        </div>
+        <div class="overlay-bottom">
+          <img class="ov-logo" id="nowLogo" src="" alt="">
+          <div class="ov-info">
+            <p class="ov-name" id="nowName">—</p>
+            <p class="ov-group" id="nowGroup">—</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="player-error" id="playerError">
+        <p>⚠ STREAM UNAVAILABLE</p>
+        <button onclick="retryStream()">↺ RETRY</button>
+      </div>
+      <div class="player-loading" id="playerLoading">
+        <div class="spinner"></div>
+      </div>
+
+    </div><!-- /player-container -->
+  </div><!-- /player-wrapper -->
+</section>
+
+<!-- CATEGORY DIVIDER -->
+<div class="cat-divider" id="catDivider">
+  <h2 class="cat-divider-title" id="catDividerTitle">ALL CHANNELS</h2>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filterBar">
+  <!-- populated by JS -->
+</div>
+
+<!-- CHANNEL GRID -->
+<section class="channels-section">
+  <div class="channels-header">
+    <p class="showing-count" id="showingCount">Showing 0 channels</p>
+    <div class="view-controls">
+      <button class="view-btn active" id="gridView">⊞</button>
+      <button class="view-btn" id="listView">≡</button>
+    </div>
+  </div>
+  <div class="channels-grid" id="channelsGrid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">STREAMVAULT</div>
+  <p class="footer-copy">Self-hosted IPTV player. Add your own <code>channels.m3u8</code> to customize.</p>
+  <div class="footer-year">2025</div>
+</footer>
+
+<!-- MOBILE NAV -->
+<div class="mobile-bar">
+  <button class="mob-btn active" data-cat="All">⊡ All</button>
+  <button class="mob-btn" data-cat="__favorites__">★ Saved</button>
+  <button class="mob-btn" id="mobSearchBtn">⌕ Search</button>
+  <button class="mob-btn" id="mobMenuBtn">⊟ Filter</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="script.js"></script>
+</body>
+</html>
